@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ActivationController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\AcademicRecordController;
 use App\Http\Controllers\Admin\SupervisorController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -23,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/records/create', [AcademicRecordController::class, 'create'])->name('records.create');
         Route::post('/records/store', [AcademicRecordController::class, 'store'])->name('records.store');
@@ -36,10 +38,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {
-        Route::get('/dashboard', function () { return 'Student Dashboard'; })->name('dashboard');
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
     });
 
     Route::middleware('role:supervisor')->prefix('supervisor')->name('supervisor.')->group(function () {
-        Route::get('/dashboard', function () { return 'Supervisor Dashboard'; })->name('dashboard');
+        Route::get('/dashboard', [SupervisorDashboardController::class, 'index'])->name('dashboard');
     });
 });
