@@ -20,4 +20,11 @@ class Student extends Model
     {
         return $this->hasMany(StudentProgram::class);
     }
+
+    public function supervisors()
+    {
+        return $this->belongsToMany(Supervisor::class, 'supervisor_student')
+                    ->withPivot('assigned_by', 'assigned_at')
+                    ->withTimestamps();
+    }
 }
