@@ -1,11 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="mb-8 flex justify-between items-center">
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
     <h2 class="text-3xl font-bold text-[#003366]">لوحة تحكم الإدارة</h2>
-    <a href="{{ route('admin.records.create') }}" class="bg-[#003366] text-white px-6 py-2 rounded shadow hover:bg-blue-900 transition">
-    إضافة سجل جديد
+    <a href="{{ route('admin.records.create') }}" class="bg-[#003366] text-white px-6 py-2 rounded shadow hover:bg-blue-900 transition whitespace-nowrap">
+        إضافة سجل جديد
     </a>
+</div>
+
+<div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
+    <form action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="بحث بالاسم، الرقم القومي، أو الكود..." class="w-full border rounded px-3 py-2 focus:outline-none focus:border-[#003366]">
+        </div>
+        <div>
+            <select name="program_type" class="w-full border rounded px-3 py-2 focus:outline-none focus:border-[#003366]">
+                <option value="">كل البرامج</option>
+                <option value="pre_master" {{ request('program_type') == 'pre_master' ? 'selected' : '' }}>تمهيدي ماجستير</option>
+                <option value="master" {{ request('program_type') == 'master' ? 'selected' : '' }}>ماجستير</option>
+                <option value="doctorate" {{ request('program_type') == 'doctorate' ? 'selected' : '' }}>دكتوراه</option>
+            </select>
+        </div>
+        <div>
+            <select name="expiry_status" class="w-full border rounded px-3 py-2 focus:outline-none focus:border-[#003366]">
+                <option value="">كل حالات القيد</option>
+                <option value="ساري القيد" {{ request('expiry_status') == 'ساري القيد' ? 'selected' : '' }}>ساري القيد</option>
+                <option value="القيد اقترب من الانتهاء" {{ request('expiry_status') == 'القيد اقترب من الانتهاء' ? 'selected' : '' }}>القيد اقترب من الانتهاء</option>
+                <option value="انتهى القيد" {{ request('expiry_status') == 'انتهى القيد' ? 'selected' : '' }}>انتهى القيد</option>
+                <option value="بيانات القيد غير مكتملة" {{ request('expiry_status') == 'بيانات القيد غير مكتملة' ? 'selected' : '' }}>بيانات القيد غير مكتملة</option>
+            </select>
+        </div>
+        <div class="flex gap-2">
+            <button type="submit" class="bg-[#800020] text-white px-4 py-2 rounded shadow hover:bg-red-800 transition w-full">
+                تصفية
+            </button>
+            <a href="{{ route('admin.dashboard') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-300 transition text-center w-full">
+                إلغاء
+            </a>
+        </div>
+    </form>
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
@@ -53,7 +86,7 @@
                 @empty
                 <tr>
                     <td colspan="7" class="p-8 text-center text-gray-500">
-                        لا توجد سجلات أكاديمية حتى الآن.
+                        لا توجد سجلات مطابقة للبحث.
                     </td>
                 </tr>
                 @endforelse
