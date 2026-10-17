@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ActivationController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AcademicRecordController;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -22,6 +24,9 @@ Route::middleware('auth')->group(function () {
     
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/records/create', [AcademicRecordController::class, 'create'])->name('records.create');
+        Route::post('/records/store', [AcademicRecordController::class, 'store'])->name('records.store');
     });
 
     Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {

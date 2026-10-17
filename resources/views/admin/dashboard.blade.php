@@ -3,9 +3,9 @@
 @section('content')
 <div class="mb-8 flex justify-between items-center">
     <h2 class="text-3xl font-bold text-[#003366]">لوحة تحكم الإدارة</h2>
-    <button class="bg-[#003366] text-white px-6 py-2 rounded shadow hover:bg-blue-900 transition">
-        إضافة سجل جديد
-    </button>
+    <a href="{{ route('admin.records.create') }}" class="bg-[#003366] text-white px-6 py-2 rounded shadow hover:bg-blue-900 transition">
+    إضافة سجل جديد
+    </a>
 </div>
 
 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
