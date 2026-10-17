@@ -1,7 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ActivationController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    
+    Route::get('/activate', [ActivationController::class, 'showActivationForm'])->name('activate');
+    Route::post('/activate', [ActivationController::class, 'activate']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', function () { return 'Admin Dashboard'; })->name('dashboard');
+    });
+
+    Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {
+        Route::get('/dashboard', function () { return 'Student Dashboard'; })->name('dashboard');
+    });
+
+    Route::middleware('role:supervisor')->prefix('supervisor')->name('supervisor.')->group(function () {
+        Route::get('/dashboard', function () { return 'Supervisor Dashboard'; })->name('dashboard');
+    });
 });
