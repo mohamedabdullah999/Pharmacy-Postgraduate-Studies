@@ -32,7 +32,7 @@
         </div>
         <div class="flex gap-2">
             <button type="submit" class="bg-[#800020] text-white px-4 py-2 rounded shadow hover:bg-red-800 transition w-full">
-                تصفية
+                بحث
             </button>
             <a href="{{ route('admin.dashboard') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-300 transition text-center w-full">
                 إلغاء
@@ -80,7 +80,7 @@
                         </span>
                     </td>
                     <td class="p-4">
-                        <a href="#" class="text-[#003366] hover:underline">عرض التفاصيل</a>
+                       <a href="{{ route('admin.records.show', $program) }}" class="text-[#003366] hover:underline font-bold">عرض التفاصيل</a>
                     </td>
                 </tr>
                 @empty
