@@ -3,7 +3,17 @@
 @section('content')
 <div class="mb-6 flex justify-between items-center">
     <h2 class="text-3xl font-bold text-[#003366]">تفاصيل السجل الأكاديمي</h2>
-    <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:underline">العودة للوحة التحكم</a>
+    <div class="flex gap-3 items-center">
+        <a href="{{ route('admin.records.edit', $program) }}" class="bg-gray-200 text-[#003366] px-4 py-2 rounded hover:bg-gray-300 transition font-bold">تعديل السجل</a>
+        
+        <form action="{{ route('admin.records.destroy', $program) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من أرشفة هذا السجل؟');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bg-[#800020] text-white px-4 py-2 rounded hover:bg-red-800 transition font-bold">أرشفة السجل</button>
+        </form>
+
+        <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:underline flex items-center mr-2">العودة للوحة التحكم</a>
+    </div>
 </div>
 
 @if(session('success'))

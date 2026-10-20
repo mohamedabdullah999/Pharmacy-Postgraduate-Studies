@@ -42,7 +42,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/records/{program}/extensions', [AcademicOperationsController::class, 'storeExtension'])->name('records.extensions.store');
         Route::post('/records/{program}/suspensions', [AcademicOperationsController::class, 'storeSuspension'])->name('records.suspensions.store');
     
-        Route::post('/records/{program}/fees', [FeePaymentController::class, 'store'])->name('records.fees.store');    
+        Route::post('/records/{program}/fees', [FeePaymentController::class, 'store'])->name('records.fees.store');  
+        
+        Route::delete('/records/{program}', [AcademicRecordController::class, 'destroy'])->name('records.destroy');
     });
 
     Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {

@@ -44,4 +44,11 @@ class AcademicRecordController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'تم إضافة السجل الأكاديمي بنجاح، وتم حساب تاريخ الانتهاء تلقائياً.');
     }
+
+    public function destroy(StudentProgram $program)
+    {
+        $program->delete(); 
+
+        return redirect()->route('admin.dashboard')->with('success', 'تم أرشفة السجل الأكاديمي بنجاح. يمكن استعادته لاحقاً.');
+    }
 }
