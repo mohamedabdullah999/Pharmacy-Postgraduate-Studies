@@ -95,4 +95,75 @@
     </div>
 
 </div>
+
+<div class="mt-8 bg-white p-6 rounded-lg shadow border-t-4 border-[#003366]">
+    <h3 class="font-bold text-xl text-[#003366] mb-6 border-b pb-2">السجلات المالية والرسوم</h3>
+    
+    <form action="{{ route('admin.records.fees.store', $program) }}" method="POST" class="mb-8 bg-[#F4F1EA] p-4 rounded border border-gray-200">
+        @csrf
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <div>
+                <label class="block text-sm font-bold mb-1">نوع الرسوم</label>
+                <select name="fee_type" class="w-full border rounded px-3 py-2" required>
+                    <option value="tuition">رسوم دراسية</option>
+                    <option value="extension">رسوم مد</option>
+                    <option value="suspension">رسوم إيقاف</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1">رقم الفترة / السنة</label>
+                <input type="number" name="period_number" min="1" class="w-full border rounded px-3 py-2" required placeholder="مثال: 1">
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1">المبلغ</label>
+                <input type="number" step="0.01" name="amount" class="w-full border rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1">تاريخ الدفع</label>
+                <input type="date" name="payment_date" class="w-full border rounded px-3 py-2" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1">رقم الإيصال</label>
+                <input type="text" name="receipt_number" class="w-full border rounded px-3 py-2" required>
+            </div>
+        </div>
+        <div class="mt-4 text-left">
+            <button type="submit" class="bg-[#003366] text-white px-6 py-2 rounded font-bold hover:bg-blue-900">إضافة الإيصال</button>
+        </div>
+    </form>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-right border-collapse border border-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-3 border-b">نوع الرسوم</th>
+                    <th class="p-3 border-b">الفترة/السنة</th>
+                    <th class="p-3 border-b">المبلغ</th>
+                    <th class="p-3 border-b">تاريخ الدفع</th>
+                    <th class="p-3 border-b">رقم الإيصال</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($program->feePayments as $fee)
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3 border-b">
+                        @if($fee->fee_type === 'tuition') رسوم دراسية
+                        @elseif($fee->fee_type === 'extension') رسوم مد
+                        @elseif($fee->fee_type === 'suspension') رسوم إيقاف
+                        @endif
+                    </td>
+                    <td class="p-3 border-b">{{ $fee->period_number }}</td>
+                    <td class="p-3 border-b">{{ $fee->amount }} ج.م</td>
+                    <td class="p-3 border-b">{{ $fee->payment_date }}</td>
+                    <td class="p-3 border-b font-bold">{{ $fee->receipt_number }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="p-6 text-center text-gray-500">لا توجد سجلات مالية مسجلة.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

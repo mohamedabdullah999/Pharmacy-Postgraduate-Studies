@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SupervisorController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 use App\Http\Controllers\Admin\AcademicOperationsController;
+use App\Http\Controllers\Admin\FeePaymentController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/records/{program}', [AcademicOperationsController::class, 'show'])->name('records.show');
         Route::post('/records/{program}/extensions', [AcademicOperationsController::class, 'storeExtension'])->name('records.extensions.store');
         Route::post('/records/{program}/suspensions', [AcademicOperationsController::class, 'storeSuspension'])->name('records.suspensions.store');
+    
+        Route::post('/records/{program}/fees', [FeePaymentController::class, 'store'])->name('records.fees.store');    
     });
 
     Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {
