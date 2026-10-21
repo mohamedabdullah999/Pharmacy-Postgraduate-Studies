@@ -6,10 +6,10 @@ use App\Http\Controllers\Auth\ActivationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\AcademicRecordController;
 use App\Http\Controllers\Admin\SupervisorController;
-use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
-use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 use App\Http\Controllers\Admin\AcademicOperationsController;
 use App\Http\Controllers\Admin\FeePaymentController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Supervisor\DashboardController as SupervisorDashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -31,20 +31,20 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/records/create', [AcademicRecordController::class, 'create'])->name('records.create');
         Route::post('/records/store', [AcademicRecordController::class, 'store'])->name('records.store');
-    
+        Route::get('/records/{program}/edit', [AcademicRecordController::class, 'edit'])->name('records.edit');
+        Route::put('/records/{program}', [AcademicRecordController::class, 'update'])->name('records.update');
+        Route::delete('/records/{program}', [AcademicRecordController::class, 'destroy'])->name('records.destroy');
+
         Route::get('/supervisors', [SupervisorController::class, 'index'])->name('supervisors.index');
         Route::get('/supervisors/create', [SupervisorController::class, 'create'])->name('supervisors.create');
         Route::post('/supervisors', [SupervisorController::class, 'store'])->name('supervisors.store');
         Route::get('/supervisors/{supervisor}/assign', [SupervisorController::class, 'assignForm'])->name('supervisors.assign.form');
         Route::post('/supervisors/{supervisor}/assign', [SupervisorController::class, 'assignStudent'])->name('supervisors.assign');
-    
+
         Route::get('/records/{program}', [AcademicOperationsController::class, 'show'])->name('records.show');
         Route::post('/records/{program}/extensions', [AcademicOperationsController::class, 'storeExtension'])->name('records.extensions.store');
         Route::post('/records/{program}/suspensions', [AcademicOperationsController::class, 'storeSuspension'])->name('records.suspensions.store');
-    
-        Route::post('/records/{program}/fees', [FeePaymentController::class, 'store'])->name('records.fees.store');  
-        
-        Route::delete('/records/{program}', [AcademicRecordController::class, 'destroy'])->name('records.destroy');
+        Route::post('/records/{program}/fees', [FeePaymentController::class, 'store'])->name('records.fees.store');
     });
 
     Route::middleware('role:student')->prefix('student')->name('student.')->group(function () {

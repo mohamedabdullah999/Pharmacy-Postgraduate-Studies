@@ -43,7 +43,7 @@
 
             <div class="mb-6">
                 <label class="block text-gray-700 font-bold mb-2 text-sm">الرقم القومي (للتحقق)</label>
-                <input type="text" name="national_id" class="w-full border rounded px-3 py-2 focus:outline-none focus:border-[#003366]" required maxlength="14" placeholder="اكتب أي 14 رقم للأدمن">
+                <input type="text" name="national_id" class="w-full border rounded px-3 py-2 focus:outline-none focus:border-[#003366]" required maxlength="14" placeholder="">
             </div>
 
             <button type="submit" class="w-full bg-[#003366] text-white py-2 rounded font-bold hover:bg-blue-900 transition">
