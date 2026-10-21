@@ -48,5 +48,45 @@ class PgEnrollmentController extends Controller
 
         return view('enrollments.create', compact('programType'));
     }
+
+    public function store(StorePgStudentRequest $request)
+    {
+        DB::transaction(function () use ($request) {
+            $student = PgStudent::create($request->only([
+                'name', 'national_id', 'student_code', 'dob', 'birth_governorate',
+                'current_address', 'mobile_number', 'email', 'current_job',
+                'academic_degree', 'degree_year', 'degree_institution',
+                'general_grade', 'specialization_grade'
+            ]));
+
+            $activationToken = Str::random(8);
+
+            $enrollment = PgEnrollment::create([
+                'pg_student_id' => $student->id,
+                'program_type' => $request->program_type,
+                'enrollment_start_date' => $request->enrollment_start_date ?? now()->toDateString(),
+                'enrollment_duration_days' => 0,
+                'activation_token' => $activationToken,
+                'enroll_dept_approval_date' => $request->enroll_dept_approval_date,
+                'enroll_studies_approval_date' => $request->enroll_studies_approval_date,
+                'enroll_faculty_approval_date' => $request->enroll_faculty_approval_date,
+                'enroll_univ_approval_date' => $request->enroll_univ_approval_date,
+                'preliminary_courses_end_date' => $request->preliminary_courses_end_date,
+                'reg_dept_approval_date' => $request->reg_dept_approval_date,
+                'reg_studies_approval_date' => $request->reg_studies_approval_date,
+                'reg_faculty_approval_date' => $request->reg_faculty_approval_date,
+                'reg_univ_approval_date' => $request->reg_univ_approval_date,
+                'thesis_title_ar' => $request->thesis_title_ar,
+                'thesis_title_en' => $request->thesis_title_en,
+            ]);
+
+            if ($request->filled('supervisors')) {
+                $enrollment->supervisors()->sync($request->supervisors);
+            }
+        });
+
+        return redirect()->route('enrollments.index', $request->program_type)
+            ->with('success', 'تم إنشاء سجل الطالب بنجاح وتوليد رمز التفعيل');
+    }
     
 }
