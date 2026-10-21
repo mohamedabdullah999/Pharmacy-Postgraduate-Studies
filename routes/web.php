@@ -22,6 +22,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/enrollments/{enrollment}/extensions', [PgExtensionController::class, 'store'])->name('extensions.store');
         Route::post('/enrollments/{enrollment}/suspensions', [PgSuspensionController::class, 'store'])->name('suspensions.store');
         Route::post('/enrollments/{enrollment}/fees', [PgFeeController::class, 'store'])->name('fees.store');
+    
+    
+        Route::get('/supervisors', [PgSupervisorController::class, 'index'])->name('supervisors.index');
+        Route::get('/supervisors/create', [PgSupervisorController::class, 'create'])->name('supervisors.create');
+        Route::post('/supervisors', [PgSupervisorController::class, 'store'])->name('supervisors.store');
+        Route::get('/supervisors/{supervisor}', [PgSupervisorController::class, 'show'])->name('supervisors.show');
+        
+        Route::post('/supervisors/{supervisor}/assign-students', [PgSupervisorController::class, 'assignStudents'])->name('supervisors.assign');
+        Route::delete('/supervisors/{supervisor}/remove-student/{enrollment}', [PgSupervisorController::class, 'removeStudent'])->name('supervisors.remove_student');
     });
 
     Route::middleware(['role:admin,supervisor'])->group(function () {
