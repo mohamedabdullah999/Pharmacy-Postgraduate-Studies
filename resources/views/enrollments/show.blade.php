@@ -264,4 +264,95 @@
         });
     });
 </script>
+
+
+<div id="extensionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+        <h3 class="text-xl font-bold text-zu-blue mb-4 border-b pb-2">إضافة حركة مد جديدة</h3>
+        <form method="POST" action="{{ route('extensions.store', $enrollment->id) }}">
+            @csrf
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">سبب المد <span class="text-red-500">*</span></label>
+                    <input type="text" name="reason" required class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">موافقة القسم</label>
+                        <input type="date" name="dept_approval_date" class="w-full border border-gray-300 rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">موافقة الدراسات</label>
+                        <input type="date" name="studies_approval_date" class="w-full border border-gray-300 rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">موافقة الكلية</label>
+                        <input type="date" name="faculty_approval_date" class="w-full border border-gray-300 rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-1">موافقة الجامعة</label>
+                        <input type="date" name="univ_approval_date" class="w-full border border-gray-300 rounded px-3 py-2">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" onclick="document.getElementById('extensionModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded text-gray-700">إلغاء</button>
+                <button type="submit" class="px-4 py-2 bg-zu-blue text-white rounded">حفظ المد</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="feeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h3 class="text-xl font-bold text-zu-blue mb-4 border-b pb-2">تسجيل إيصال رسوم</h3>
+        <form method="POST" action="{{ route('fees.store', $enrollment->id) }}">
+            @csrf
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">بيان الرسوم (النوع) <span class="text-red-500">*</span></label>
+                    <select name="fee_type" required class="w-full border border-gray-300 rounded px-3 py-2">
+                        <option value="year_1">رسوم عام أول</option>
+                        <option value="year_2">رسوم عام ثان</option>
+                        <option value="year_3">رسوم عام ثالث</option>
+                        <option value="ext_1">رسوم مد أول</option>
+                        <option value="susp_1">رسوم إيقاف أول</option>
+                        <option value="other">أخرى...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">رقم الإيصال <span class="text-red-500">*</span></label>
+                    <input type="text" name="receipt_number" required class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">تاريخ السداد <span class="text-red-500">*</span></label>
+                    <input type="date" name="payment_date" required class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" onclick="document.getElementById('feeModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded text-gray-700">إلغاء</button>
+                <button type="submit" class="px-4 py-2 bg-zu-green text-white rounded">حفظ الإيصال</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addExtensionBtn = document.querySelector('button[onclick="openExtensionModal()"]');
+        if(addExtensionBtn) {
+            addExtensionBtn.onclick = function() { document.getElementById('extensionModal').classList.remove('hidden'); }
+        }
+        
+        const addFeeBtn = document.querySelector('#sec-fees button');
+        if(addFeeBtn) {
+            addFeeBtn.onclick = function() { document.getElementById('feeModal').classList.remove('hidden'); }
+        }
+        
+        const addExtBtn = document.querySelector('#sec-extensions button');
+        if(addExtBtn) {
+            addExtBtn.onclick = function() { document.getElementById('extensionModal').classList.remove('hidden'); }
+        }
+    });
+</script>
 @endsection
